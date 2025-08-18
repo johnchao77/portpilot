@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PortPilot</title>
+  <!-- Tailwind CDN，先用CDN快速成型 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 茶色玻璃質感（小面積用） */
+    .tea-glass { background: rgba(102,86,72,0.12); backdrop-filter: blur(10px); }
+    .pp-card { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  </style>
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="min-h-screen bg-white relative overflow-hidden">
+  <!-- 裝飾：藍色圓形漸層 -->
+  <div class="pointer-events-none absolute -top-36 -left-36 w-[520px] h-[520px] rounded-full opacity-20"
+       style="background: radial-gradient(circle at center, #0EA5E9, #1E3A8A)"></div>
+
+  <!-- 小面積茶玻璃塊 -->
+  <div class="pointer-events-none absolute right-8 top-8 tea-glass rounded-2xl" style="width:220px;height:120px;border:1px solid rgba(255,255,255,0.35)"></div>
+  <div class="pointer-events-none absolute left-12 bottom-10 tea-glass rounded-3xl" style="width:280px;height:160px;border:1px solid rgba(255,255,255,0.25)"></div>
+
+  {% block content %}{% endblock %}
+  {% block body_extra %}{% endblock %}
+</body>
+</html>

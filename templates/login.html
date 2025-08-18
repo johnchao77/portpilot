@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="relative z-10 flex flex-col items-center justify-center px-6 py-12">
+  <!-- 簡約 LOGO -->
+  <div class="flex items-center gap-3 mt-4">
+    <div class="relative">
+      <div class="w-12 h-12 rounded-2xl bg-blue-700 grid place-content-center pp-card">
+        <!-- PP glyph -->
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+          <path d="M6 7h9a6 6 0 0 1 0 12H6V7z" fill="white" opacity="0.95"/>
+          <path d="M10 11h5a2.5 2.5 0 1 1 0 5h-5v-5z" fill="#0EA5E9"/>
+        </svg>
+      </div>
+      <div class="absolute -inset-1 rounded-3xl" style="box-shadow:0 0 0 1px rgba(102,86,72,0.25) inset;"></div>
+    </div>
+    <div class="leading-tight">
+      <div class="text-xl font-semibold text-neutral-900 tracking-tight">PortPilot</div>
+      <div class="text-[13px] text-neutral-500">Supply Chain Tracking System</div>
+    </div>
+  </div>
+
+  <!-- 登入卡片 -->
+  <div class="mt-8 w-full max-w-md">
+    <div class="rounded-2xl border border-neutral-100 pp-card bg-white/90 tea-glass p-7">
+      <h2 class="text-2xl font-semibold text-neutral-900">Sign in</h2>
+      <p class="mt-1 text-sm text-neutral-500">Use your work email to access PortPilot.</p>
+
+      <form method="POST" action="#" class="mt-6 space-y-4" onsubmit="return false;">
+        <div class="grid gap-1.5">
+          <label for="email" class="text-sm font-medium text-neutral-700">Email</label>
+          <input id="email" type="email" required placeholder="admin@test.com"
+                 class="w-full rounded-xl border border-neutral-200 py-2.5 px-3 focus:outline-none focus:ring-4 focus:ring-sky-100" />
+        </div>
+
+        <div class="grid gap-1.5">
+          <label for="password" class="text-sm font-medium text-neutral-700">Password</label>
+          <input id="password" type="password" minlength="6" required placeholder="••••••••"
+                 class="w-full rounded-xl border border-neutral-200 py-2.5 px-3 focus:outline-none focus:ring-4 focus:ring-sky-100" />
+        </div>
+
+        <!-- reCAPTCHA 先放置UI，稍後接後端驗證 -->
+        <div class="pt-2">
+          <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+        </div>
+
+        <button type="submit"
+                class="mt-2 w-full rounded-xl bg-blue-700 text-white py-2.5 font-medium hover:bg-blue-800">
+          Sign in
+        </button>
+
+        <p class="text-xs text-neutral-500 text-center mt-2">
+          By continuing, you agree to the Terms and acknowledge the Privacy Policy.
+        </p>
+      </form>
+    </div>
+
+    <div class="mt-6 text-center text-sm text-neutral-500">
+      Need access? Ask an Admin to create an account and assign a group.
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body_extra %}
+<!-- Google reCAPTCHA v2 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
