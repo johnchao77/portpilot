@@ -6,8 +6,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-# 允許本機 React 來源呼叫
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}})
+# 只允許你的前端網域呼叫（本機開發也保留）
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://portpilot.co",
+            "http://localhost:3000"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 RECAPTCHA_SECRET = os.getenv("RECAPTCHA_SECRET")  # 後端用 secret key（不是 site key）
 
@@ -21,33 +30,29 @@ def verify_recaptcha(token, remote_ip=None):
     data = r.json()
     return data.get("success", False), data
 
-@app.route("/api/health", methods=["GET"])
+# 健康檢查（方便你測試 API 有沒有活著）
+@app.route("/health", methods=["GET"])
 def health():
-    return {"ok": True}, 200
+    return jsonify({"ok": True, "service": "portpilot-api"}), 200
 
-@app.route("/login", methods=["POST"])
+# 統一處理登入（同時支援 /login 和 /api/login，避免前端路徑不一致）
+@app.route("/login", methods=["POST", "OPTIONS"])
+@app.route("/api/login", methods=["POST", "OPTIONS"])
 def login():
-    body = request.get_json(force=True)
-    email = body.get("email", "").strip().lower()
-    password = body.get("password", "")
-    token = body.get("recaptcha_token")
+    try:
+        data = request.get_json(force=True, silent=True) or {}
+        email = data.get("email", "").strip()
+        password = data.get("password", "")
+        recaptcha_token = data.get("recaptcha_token") or data.get("recaptchaToken")
 
-    if not token:
-        return jsonify({"message": "Missing reCAPTCHA token"}), 400
+        # 簡單先用硬編碼驗證（之後你要接真正資料庫/帳號系統再換）
+        if email == "admin@test.com" and password == "pp1234":
+            return jsonify({"ok": True, "user": {"email": email, "role": "admin"}}), 200
 
-    ok, detail = verify_recaptcha(token, request.remote_addr)
-    if not ok:
-        return jsonify({"message": "reCAPTCHA failed", "detail": detail}), 400
-
-    # ---- 硬碼帳密（測試用）----
-    if email == "admin@test.com" and password == "pp1234":
-        # 未來可在這裡產生 JWT 與回傳權限群組
-        return jsonify({
-            "message": "Login OK",
-            "user": {"email": email, "group": "admin"}
-        }), 200
-    else:
-        return jsonify({"message": "帳號或密碼不正確"}), 401
+        return jsonify({"ok": False, "error": "invalid_credentials"}), 401
+    except Exception as e:
+        return jsonify({"ok": False, "error": "server_error", "detail": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    # 本機啟動
+    app.run(host="0.0.0.0", port=5000, debug=True)
