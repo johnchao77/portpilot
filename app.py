@@ -207,7 +207,8 @@ def login():
 
     return jsonify({"ok": False, "error": "invalid_credentials"}), 401
 
-SEED_ROWS = [
+SEED_ROWS_JSON = r"""
+[
   {"order_no":"20250815-昇达信-91708-A5","status":"Planning","drayage":null,"warehouse":null,"mbl_no":null,"container":null,"etd":null,"eta":null,"pod":null,"arrived":null,"lfd":null,"appt_date":null,"lrd":null,"delivered_dt":null,"emptied_dt":null,"returned_date":null},
   {"order_no":"20250818-昇达信-91708-A6","status":"Planning","drayage":null,"warehouse":null,"mbl_no":null,"container":null,"etd":null,"eta":null,"pod":null,"arrived":null,"lfd":null,"appt_date":null,"lrd":null,"delivered_dt":null,"emptied_dt":null,"returned_date":null},
   {"order_no":"20250611-融达通-91708-A1","status":"Offshore","drayage":null,"warehouse":null,"mbl_no":"COSU6419881880","container":"BEAU6205263","etd":"2025-06-17","eta":"2025-07-01","pod":"Los Angeles,CA","arrived":null,"lfd":null,"appt_date":null,"lrd":null,"delivered_dt":null,"emptied_dt":null,"returned_date":null},
@@ -234,6 +235,8 @@ SEED_ROWS = [
   {"order_no":"20250516-昇达信-91708-10","status":"Customs Hold","drayage":"Carrier","warehouse":"WHSE 1","mbl_no":"OOLU2815855000","container":"OOLU9678901","etd":"2025-05-20","eta":"2025-06-08","pod":"Los Angeles,CA","arrived":"2025-06-08","lfd":"2025-06-12","appt_date":"2025-06-11","lrd":"2025-06-13","delivered_dt":"2025-06-11 14:10","emptied_dt":"2025-06-12 09:20","returned_date":"2025-06-13"},
   {"order_no":"20250801-昇达信-91708-A8","status":"Offshore","drayage":"Carrier","warehouse":"WHSE 1","mbl_no":2154302820,"container":"OOCU8646981","etd":"2024-12-09","eta":"2024-12-27","pod":"Los Angeles,CA","arrived":"2025-08-10","lfd":"2025-08-15","appt_date":"2025-08-13","lrd":"2025-08-17","delivered_dt":"2025-08-13 16:10","emptied_dt":"2025-08-14 09:00","returned_date":"2025-08-18"}
 ]
+"""
+SEED_ROWS = json.loads(SEED_ROWS_JSON)
 
 if __name__ == "__main__":
     # 本機啟動
