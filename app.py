@@ -140,6 +140,7 @@ def normalize_row(row: dict):
 
 # === 5) API：讀取資料（登入驗證你已在前端做 ProtectedRoute；後端先不額外擋） ===
 @app.get("/my-containers")
+@app.get("/pps") # 保留相容性
 def pps_list():
     db = get_db()
     cur = db.execute("SELECT data FROM pps_rows ORDER BY id")
@@ -148,6 +149,7 @@ def pps_list():
 
 # === 6) API：整批儲存（最簡 MVP：覆蓋全部資料）===
 @app.put("/my-containers")
+@app.put("/pps") # 保留相容性
 def pps_save_all():
     payload = request.get_json(silent=True) or {}
     rows = payload.get("rows", [])
